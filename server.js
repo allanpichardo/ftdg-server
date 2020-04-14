@@ -1,14 +1,13 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
-const https = require('http').createServer(app);
-const io = require('socket.io')(https);
-
-var server = https.createServer({
+const https = require('http').createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
   cert: fs.readFileSync(' /etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
   requestCert: false,
   rejectUnauthorized: false
 },app);
+const io = require('socket.io')(https);
 
 app.use(express.static(__dirname + '/public'));
 
