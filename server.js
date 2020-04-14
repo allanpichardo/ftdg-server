@@ -233,7 +233,7 @@ io.on('connection', function(socket){
     });
   });
 
-  server.listen(3100, () => {
+  https.listen(3100, () => {
     console.log('> Ready on http://localhost:3100');
   });
 
