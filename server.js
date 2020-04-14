@@ -1,7 +1,14 @@
 const express = require('express');
 const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const https = require('http').createServer(app);
+const io = require('socket.io')(https);
+
+var server = https.createServer({
+  key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
+  cert: fs.readFileSync(' /etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
+  requestCert: false,
+  rejectUnauthorized: false
+},app);
 
 app.use(express.static(__dirname + '/public'));
 
@@ -227,7 +234,7 @@ io.on('connection', function(socket){
     });
   });
 
-  app.listen(3100, () => {
+  server.listen(3100, () => {
     console.log('> Ready on http://localhost:3100');
   });
 
