@@ -3,7 +3,7 @@ const fs = require('fs');
 const app = express();
 const https = require('http').createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
-  cert: fs.readFileSync(' /etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
   requestCert: false,
   rejectUnauthorized: false
 },app);
