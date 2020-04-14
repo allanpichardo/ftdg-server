@@ -227,7 +227,7 @@ io.on('connection', function(socket){
     });
   });
 
-  app.listen(8000, () => {
+  app.listen(3100, () => {
     console.log('> Ready on http://localhost:3100');
   });
 
