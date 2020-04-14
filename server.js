@@ -1,6 +1,8 @@
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 const app = express();
+
 const https = require('http').createServer({
   key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
@@ -10,6 +12,7 @@ const https = require('http').createServer({
 const io = require('socket.io')(https);
 
 app.use(express.static(__dirname + '/public'));
+app.use(cors());
 
 const locations = {
   Akan: {
