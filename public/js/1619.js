@@ -293,7 +293,7 @@ function start() {
     });
     poly.setMap(map);
 
-    socket = io('//localhost:3100');
+    socket = io('//ftdg.allanpichardo.com');
 
     socket.on('draw line', function(line){
         let path = poly.getPath();
