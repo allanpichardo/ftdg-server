@@ -184,22 +184,22 @@ const locations = {
   }
 };
 
+let clients = [];
+
 function getCoordinates(region) {
   let underscored = region.replace(' ', '_');
   return locations[underscored];
 }
 
 io.on('connection', function(socket){
-  socket.on('segment', (msg) => {
-    console.log(`> Received segment ${msg}`);
-    const parts = msg.split(',');
-    let start = getCoordinates(parts[0]);
-    let end = getCoordinates(parts[1]);
-    socket.emit('draw line', {
-      start: start,
-      end: end
+  console.log('> New user connected');
+  socket.on('disconnect', () => {
+    console.log('> User disconnected');
+    clients = clients.filter((item) => {
+      return item !== socket;
     });
   });
+  clients.push(socket);
 });
 
 (async () => {
@@ -208,12 +208,28 @@ io.on('connection', function(socket){
   });
 
   app.post('/segment', (req, res) => {
+    let msg = req.query.line;
+    console.log(`> Received segment ${msg}`);
+    const parts = msg.split(',');
+    let start = getCoordinates(parts[0]);
+    let end = getCoordinates(parts[1]);
 
+    clients.forEach((socket) => {
+      socket.emit('draw line', {
+        start: start,
+        end: end
+      });
+    });
+
+    res.json({
+      execution: true,
+      message: "line emitted"
+    });
   });
 
   app.listen(8000, () => {
-    console.log('> Ready on http://localhost:3000');
+    console.log('> Ready on http://localhost:3100');
   });
 
-  io.listen(8080);
+  io.listen(3101);
 })();

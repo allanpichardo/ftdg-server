@@ -293,7 +293,7 @@ function start() {
     });
     poly.setMap(map);
 
-    socket = io('http://localhost:8080');
+    socket = io('http://localhost:3101');
 
     socket.on('draw line', function(line){
         let path = poly.getPath();
