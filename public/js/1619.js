@@ -293,9 +293,10 @@ function start() {
     });
     poly.setMap(map);
 
-    socket = io('//ftdg.allanpichardo.com/ws');
+    socket = io('//ftdg.allanpichardo.com');
 
     socket.on('draw line', function(line){
+        console.log('Received path');
         let path = poly.getPath();
         path.push(new google.maps.LatLng(line.start));
         path.push(new google.maps.LatLng(line.end));
