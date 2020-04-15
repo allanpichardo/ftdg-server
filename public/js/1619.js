@@ -334,9 +334,11 @@ function animatePath(start, end, durationSeconds = 1) {
     let animationSequence = () => {
         step += 1;
         if (step < numSteps) {
+            line.setMap(null);
             let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,step/numSteps);
             console.log(`appending ${are_we_there_yet}`);
             line.setPath([start, are_we_there_yet]);
+            line.setMap(map);
             requestAnimationFrame(animationSequence);
         }
     };
