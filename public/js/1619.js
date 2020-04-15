@@ -319,7 +319,7 @@ function testLines() {
     }, 1000);
 }
 
-function animatePath(start, end, durationSeconds = 1) {
+function animatePath(start, end, durationSeconds = 1.0) {
     let line = new google.maps.Polyline({
         path: [start, start],
         strokeColor: "#222222",
@@ -329,16 +329,15 @@ function animatePath(start, end, durationSeconds = 1) {
     });
     line.setMap(map);
     let step = 0;
-    const numSteps = 60 * durationSeconds;
+    const numSteps = 60.0 * durationSeconds;
 
     let animationSequence = () => {
         step += 1;
         if (step < numSteps) {
-            line.setMap(null);
-            let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,step/numSteps);
-            console.log(`appending ${are_we_there_yet}`);
+            let t = step/numSteps;
+            let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,t);
+            console.log(`${t}: appending ${are_we_there_yet}`);
             line.setPath([start, are_we_there_yet]);
-            line.setMap(map);
             requestAnimationFrame(animationSequence);
         }
     };
