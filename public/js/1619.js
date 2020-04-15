@@ -288,8 +288,8 @@ function start() {
 
     poly = new google.maps.Polyline({
         strokeColor: '#000000',
-        strokeOpacity: 1.0,
-        strokeWeight: 3
+        strokeOpacity: 0.8,
+        strokeWeight: 1
     });
     poly.setMap(map);
 
@@ -297,9 +297,9 @@ function start() {
 
     socket.on('draw line', function(line){
         console.log('Received path');
-        let path = poly.getPath();
-        path.push(new google.maps.LatLng(line.start));
-        path.push(new google.maps.LatLng(line.end));
+        let start = new google.maps.LatLng(line.start);
+        let end = new google.maps.LatLng(line.start);
+        animatePath(start, end);
     });
 
 }
@@ -317,5 +317,24 @@ function testLines() {
             }, 1000);
         }, 1000);
     }, 1000);
+}
 
+function animatePath(start, end, durationSeconds = 1) {
+    let line = new google.maps.Polyline({
+        path: [start, start],
+        strokeColor: "#222222",
+        strokeOpacity: 1,
+        strokeWeight: 1,
+        geodesic: true, //set to false if you want straight line instead of arc
+        map: map,
+    });
+    let step = 0;
+    const numSteps = 60 * durationSeconds;
+    requestAnimationFrame(() => {
+        step += 1;
+        if (step < numSteps) {
+            let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,step/numSteps);
+            line.setPath([start, are_we_there_yet]);
+        }
+    });
 }
