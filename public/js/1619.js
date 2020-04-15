@@ -326,8 +326,8 @@ function animatePath(start, end, durationSeconds = 1) {
         strokeOpacity: 1,
         strokeWeight: 1,
         geodesic: true, //set to false if you want straight line instead of arc
-        map: map,
     });
+    line.setMap(map);
     let step = 0;
     const numSteps = 60 * durationSeconds;
 
@@ -335,6 +335,7 @@ function animatePath(start, end, durationSeconds = 1) {
         step += 1;
         if (step < numSteps) {
             let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,step/numSteps);
+            console.log(`appending ${are_we_there_yet}`);
             line.setPath([start, are_we_there_yet]);
             requestAnimationFrame(animationSequence);
         }
