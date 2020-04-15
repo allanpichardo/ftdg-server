@@ -298,7 +298,7 @@ function start() {
     socket.on('draw line', function(line){
         console.log('Received path');
         let start = new google.maps.LatLng(line.start);
-        let end = new google.maps.LatLng(line.start);
+        let end = new google.maps.LatLng(line.end);
         animatePath(start, end);
     });
 
@@ -336,7 +336,6 @@ function animatePath(start, end, durationSeconds = 1.0) {
         if (step < numSteps) {
             let t = step/numSteps;
             let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,t);
-            console.log(`${t}: appending ${are_we_there_yet}`);
             line.setPath([start, are_we_there_yet]);
             requestAnimationFrame(animationSequence);
         }
