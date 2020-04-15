@@ -330,11 +330,14 @@ function animatePath(start, end, durationSeconds = 1) {
     });
     let step = 0;
     const numSteps = 60 * durationSeconds;
-    requestAnimationFrame(() => {
+
+    let animationSequence = () => {
         step += 1;
         if (step < numSteps) {
             let are_we_there_yet = google.maps.geometry.spherical.interpolate(start,end,step/numSteps);
             line.setPath([start, are_we_there_yet]);
+            requestAnimationFrame(animationSequence);
         }
-    });
+    };
+    requestAnimationFrame(animationSequence);
 }
