@@ -320,12 +320,23 @@ function testLines() {
 }
 
 function animatePath(start, end, durationSeconds = 1.0) {
+    var lineSymbol = {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 4
+    };
+
     let line = new google.maps.Polyline({
         path: [start, start],
         strokeColor: "#222222",
-        strokeOpacity: 1,
+        strokeOpacity: 0,
         strokeWeight: 1,
-        geodesic: true, //set to false if you want straight line instead of arc
+        geodesic: true,
+        icons: [{
+            icon: lineSymbol,
+            offset: '0',
+            repeat: '20px'
+        }],
     });
     line.setMap(map);
     let step = 0;
