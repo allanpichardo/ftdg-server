@@ -293,7 +293,7 @@ function start() {
     });
     poly.setMap(map);
 
-    socket = io('//ftdg.allanpichardo.com');
+    socket = io();
 
     socket.on('draw line', function(line){
         console.log('Received path');
@@ -301,18 +301,18 @@ function start() {
         let end = new google.maps.LatLng(line.end);
         animatePath(start, end);
     });
-
 }
 
 function testLines() {
+    console.log(socket);
     setTimeout(() => {
-        socket.emit('segment', 'Colombia,Cuba');
+        socket.emit('segment', 'Colombia,New Orleans');
         setTimeout(() => {
-            socket.emit('segment', 'Cuba,Dominican Republic');
+            socket.emit('segment', 'Honduras,Dominican Republic');
             setTimeout(() => {
                 socket.emit('segment', 'Dominican Republic,Puerto Rico');
                 setTimeout(() => {
-                    socket.emit('segment', 'Puerto Rico,Kongo');
+                    socket.emit('segment', 'Puerto Rico,Angola');
                 }, 1000);
             }, 1000);
         }, 1000);

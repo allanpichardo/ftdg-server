@@ -3,193 +3,107 @@ const cors = require('cors');
 const fs = require('fs');
 const app = express();
 
-const https = require('http').createServer({
-  key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
-  requestCert: false,
-  rejectUnauthorized: false
-},app);
+let https;
+try {
+  https = require('http').createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/talkinghead.allanpichardo.com/fullchain.pem'),
+    requestCert: false,
+    rejectUnauthorized: false
+  },app);
+} catch (e) {
+  https = require('http').createServer(app);
+}
+
 const io = require('socket.io')(https);
 
 app.use(express.static(__dirname + '/public'));
 app.use(cors());
 
 const locations = {
-  Akan: {
-    lat: 5.5912045,
-    lng: -0.2497705
-  },
-  Alabama: {
-    lat: 32.5562859,
-    lng: -88.9247942
-  },
-  Anguilla: {
-    lat: 18.2206,
-    lng: -63.0686
-  },
-  Bahamas: {
-    lat: 25.0343,
-    lng: -77.3963
-  },
-  Belize: {
-    lat: 17.1899,
-    lng: -88.4976
-  },
-  Benin: {
-    lat: 9.3077,
-    lng: 2.3158
-  },
-  Bermuda: {
-    lat: 32.3078,
-    lng: -64.7505
-  },
   Brazil: {
-    lat: -14.2350,
-    lng: -51.9253
-  },
-  Chicago: {
-    lat: 41.8781,
-    lng: -87.6298
-  },
-  Colombia: {
-    lat: 4.5709,
-    lng: -74.2973
-  },
-  Cuba: {
-    lat: 21.5218,
-    lng: -77.7812
+    lat: -12.9017557,
+    lng: -38.4901453
   },
   Detroit: {
     lat: 42.3314,
     lng: -83.0458
   },
-  Dominica: {
-    lat: 15.4150,
-    lng: -61.3710
+  Chicago: {
+    lat: 41.8781,
+    lng: -87.6298
   },
-  Dominican_Republic: {
-    lat: 18.7317,
-    lng: -70.1627
-  },
-  Fulani: {
-    lat: 14.4974,
-    lng: 14.4524
-  },
-  Georgia: {
-    lat: 32.1656,
-    lng: -82.9001
-  },
-  Grenada: {
-    lat: 12.1165,
-    lng: -61.6790
-  },
-  Guadeloupe: {
-    lat: 16.2650,
-    lng: -61.5510
-  },
-  Haiti: {
-    lat: 18.9712,
-    lng: -72.2852
-  },
-  Hausa: {
-    lat: 12.2413,
-    lng: 9.9074
-  },
-  Igbo: {
-    lat: 6.9792,
-    lng: 3.9980
-  },
-  Jamaica: {
-    lat: 18.1096,
-    lng: -77.2975
-  },
-  Kanem: {
-    lat: 14.8781,
-    lng: 15.4068
-  },
-  Kangaba: {
-    lat: 11.9428,
-    lng: 8.4157
-  },
-  Kongo: {
-    lat: -4.0383,
-    lng: 21.7587
-  },
-  Louisiana: {
-    lat: 30.9843,
-    lng: -91.9623
-  },
-  Mali: {
-    lat: 17.5707,
-    lng: -3.9962
-  },
-  Mande: {
-    lat: 12.545556,
-    lng: -8.085556
-  },
-  Mexico: {
-    lat: 21.1619,
-    lng: -86.8515
-  },
-  Mississippi: {
-    lat: 32.3547,
-    lng: -89.3985
-  },
-  Nevis: {
-    lat: 17.1554,
-    lng: -62.5796
+  Memphis: {
+    lat: 35.1291054,
+    lng: -90.1108696
   },
   New_York: {
     lat: 40.7128,
     lng: -74.0060
   },
-  Panama: {
-    lat: 8.5380,
-    lng: -80.7821
+  Baltimore: {
+    lat: 39.2846854,
+    lng: -76.6905362
   },
-  Peru: {
-    lat: -9.19,
-    lng: -75.0152
+  Atlanta: {
+    lat: 33.7676931,
+    lng: -84.4906436
+  },
+  New_Orleans: {
+    lat: 30.0329222,
+    lng: -90.0226465
   },
   Puerto_Rico: {
-    lat: 18.2208,
-    lng: -66.5901
+    lat: 18.3892246,
+    lng: -66.1305123
   },
-  Saint_Eustatius: {
-    lat: 17.4890,
-    lng: -62.9736
+  Colombia: {
+    lat: 10.4001968,
+    lng: -75.5435449
   },
-  St_Lucia: {
-    lat: 13.9094,
-    lng: -60.9789
+  Dominican_Republic: {
+    lat: 18.4800391,
+    lng: -69.9818994
   },
-  Tennessee: {
-    lat: 35.5175,
-    lng: -86.5804
+  Barbados: {
+    lat: 13.1013085,
+    lng: -59.6141029
   },
-  Texas: {
-    lat: 31.9686,
-    lng: -99.9018
+  Jamaica: {
+    lat: 18.0179332,
+    lng: -76.8356757
   },
-  Trinidad: {
-    lat: 10.6918,
-    lng: -61.2225
+  Trinidad_and_Tobago: {
+    lat: 10.6685091,
+    lng: -61.5314139
   },
-  Venezuela: {
-    lat: 6.4238,
-    lng: -66.5897
+  Honduras: {
+    lat: 16.3233719,
+    lng: -86.5408624
   },
-  Virginia: {
-    lat: 37.4316,
-    lng: -78.6569
+  Haiti: {
+    lat: 18.5790242,
+    lng: -72.3544999
   },
-  Wolof: {
-    lat: 15.397663,
-    lng: -15.148774
+  Senegal: {
+    lat: 14.7110218,
+    lng: -17.5008444
   },
-  Yoruba: {
-    lat: 7.4832132,
-    lng: 4.3997974
+  Ghana: {
+    lat: 5.5912045,
+    lng: -0.2497694
+  },
+  Angola: {
+    lat: -8.8535258,
+    lng: 13.2140645
+  },
+  Benin: {
+    lat: 6.4928025,
+    lng: 2.6078194
+  },
+  Nigeria: {
+    lat: 6.5480503,
+    lng: 3.2139196
   }
 };
 
