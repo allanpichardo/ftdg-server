@@ -37,7 +37,7 @@ const locations = {
     lat: 35.1291054,
     lng: -90.1108696
   },
-  New_York: {
+  New_York_City: {
     lat: 40.7128,
     lng: -74.0060
   },
