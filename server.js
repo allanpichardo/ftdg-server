@@ -110,7 +110,7 @@ const locations = {
 let clients = [];
 
 function getCoordinates(region) {
-  let underscored = region.replace(' ', '_');
+  let underscored = region.replace(/ /g, '_');
   return locations[underscored];
 }
 
